@@ -1,0 +1,24 @@
+{
+    "challenge_module": "Challenge",
+    "solution_module": "Solution",
+    "theorem_names": [
+        "GaussianQuartics.theorem1i",
+        "GaussianQuartics.theorem1ii",
+        "GaussianQuartics.theorem2_plus",
+        "GaussianQuartics.theorem2_minus",
+        "GaussianQuartics.gaussian_int_plus_i_iff",
+        "GaussianQuartics.rat_minus_i_trivial",
+        "GaussianQuartics.rat_plus_i_iff",
+        "GaussianQuartics.rat_hilbert_plus",
+        "GaussianQuartics.rat_hilbert_minus"
+    ],
+    "definition_names": [
+        "GaussianQuartics.plusPointGroup",
+        "GaussianQuartics.minusPointGroup"
+    ],
+    "permitted_axioms": [
+        "propext",
+        "Quot.sound",
+        "Classical.choice"
+    ]
+}

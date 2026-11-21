@@ -14,7 +14,7 @@ namespace GaussianQuartics
 /-- The Gaussian rationals, with generator satisfying `I² = -1`. -/
 abbrev GaussianRat := QuadraticAlgebra ℚ (-1) 0
 
-instance : Fact (¬ IsSquare (-1 : ℚ)) := ⟨by
+instance instFactNotIsSquareNegOne : Fact (¬ IsSquare (-1 : ℚ)) := ⟨by
   rintro ⟨q, hq⟩
   nlinarith [sq_nonneg q]⟩
 

@@ -1,0 +1,41 @@
+# Palomar's mechanical preflight (https://github.com/PalomarRegistry/PalomarSubmission), run by hand before a
+# submission: Actions -> Palomar preflight -> Run workflow, or
+#   gh workflow run palomar-preflight.yml -f commit=<40 hex> -f project=<directory> -f request_id=<12 chars>
+# It checks one Lean project of this repository (a directory with its own lakefile and comparator.json) at the given
+# commit, with Palomar's reusable workflow pinned to a full commit (`uses` and `pipeline_commit` must be the same),
+# on GitHub-hosted runners (profile palomar-standard-v1). The report is the job's artifact `mechanical-report-<id>`.
+name: Palomar preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Full 40-character commit to check
+        required: true
+        type: string
+      project:
+        description: The project directory, e.g. gaussian-quartics
+        required: true
+        type: string
+      request_id:
+        description: Twelve lowercase letters or digits naming the report
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    uses: PalomarRegistry/PalomarSubmission/.github/workflows/submission.yml@14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+    with:
+      repository: ${{ github.repository }}
+      commit: ${{ inputs.commit }}
+      pipeline_commit: 14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+      request_id: ${{ inputs.request_id }}
+      mode: full
+      execution_profile: palomar-standard-v1
+      options: >-
+        {"project_path": "${{ inputs.project }}",
+         "comparator_config_path": "${{ inputs.project }}/comparator.json",
+         "authorization_relationship": "I am a responsible author or maintainer"}

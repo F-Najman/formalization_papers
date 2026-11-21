@@ -3,6 +3,9 @@ module
 public import GaussianQuartics.GaussianCurves
 public import Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Point
 public import Mathlib.Data.ZMod.Basic
+-- The field structure of `ZMod p`, which the Gaussian integers bring into `GaussianQuartics.lean` and the Challenge:
+-- with it `ZMod 2 × ZMod 2` gets the same instances here as in the Challenge.
+public import Mathlib.Algebra.Field.ZMod
 
 import Mathlib.Tactic
 
@@ -20,10 +23,10 @@ open WeierstrassCurve.Affine
 /-- The curve `Y² = X³ - X` over the Gaussian rationals. -/
 @[expose] def minusCurve : WeierstrassCurve GaussianRat := ⟨0, 0, 0, -1, 0⟩
 
-instance : plusCurve.IsElliptic :=
+instance instIsEllipticPlusCurve : plusCurve.IsElliptic :=
   ⟨isUnit_iff_ne_zero.mpr (by decide +kernel)⟩
 
-instance : minusCurve.IsElliptic :=
+instance instIsEllipticMinusCurve : minusCurve.IsElliptic :=
   ⟨isUnit_iff_ne_zero.mpr (by decide +kernel)⟩
 
 private theorem plus_equation {x y : GaussianRat} :

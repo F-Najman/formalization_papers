@@ -1,0 +1,172 @@
+# Palomar metadata (formalization.yaml v0.4) of this project; see README.md.
+version: v0.4
+project:
+  name: The Diophantine equation x⁴ ± y⁴ = iz² in Gaussian integers
+  description: 'Formal statements and proofs, in Lean 4 with Mathlib, of the results of F. Najman, "The Diophantine equation
+    x⁴ ± y⁴ = iz² in Gaussian integers" (Amer. Math. Monthly 117 (2010)). In the Gaussian integers ℤ[i], the equation x⁴ −
+    y⁴ = iz² has only trivial solutions (xyz = 0); the nontrivial solutions of x⁴ + y⁴ = iz² with gcd(x, y, z) = 1 are exactly
+    those with x, y ∈ {±1, ±i} and z = ±i(1 + i), and all its nontrivial solutions are given by x ∈ {±y, ±iy}, z = ±i(1 +
+    i)y²; and the equations x⁴ ± y⁴ = z² have only trivial solutions (a theorem of Hilbert, reproved in the paper). As the
+    paper remarks, the same holds over ℚ(i). The proofs go through the elliptic curves y² = x³ + x and y² = x³ − x over ℚ(i),
+    whose groups of ℚ(i)-points, the point at infinity included, are formalized as ℤ/2 × ℤ/2 and ℤ/2 × ℤ/4. Where the paper
+    computes the ranks with a computer program, the formalization determines the ℚ(i)-points directly: the line through a
+    point and its complex conjugate reduces them to rational points, which Fermat''s descent determines. 9 theorems and 2
+    definitions, no sorry, only the axioms propext, Classical.choice and Quot.sound.'
+  authors:
+  - Filip Najman
+  responsible_maintainers:
+  - Filip Najman
+  license: Apache-2.0
+classification:
+  arxiv:
+  - math.NT
+  msc2020:
+  - 11D25
+  - 11G05
+  - 11R11
+  - 68V20
+sources:
+- title: The Diophantine equation x⁴ ± y⁴ = iz² in Gaussian integers
+  authors:
+  - Filip Najman
+  id: doi:10.4169/000298910X496769
+  type: paper
+  location: Amer. Math. Monthly 117 (2010), no. 7, 637–641; arXiv:1005.1528
+  relationship: formalizes
+  note: Theorem 1 (i) and (ii), Theorem 2, the closing Remark (the same results over ℚ(i)), and the groups of ℚ(i)-points
+    of the two elliptic curves of the proofs. Theorem 1(ii) is stated as an equivalence, so that the listed solutions are
+    shown to be solutions. The paper gives the torsion subgroups of these groups and computes their ranks with Simon's program;
+    the formalization determines the whole groups, by a different argument (the chord through a point and its conjugate, and
+    Fermat's descent over ℚ). The proof of Theorem 1 substitutes b = −ir; the formalization uses b = ir, which gives the displayed
+    curves a² = b³ ± b (with b = −ir one gets the isomorphic curves a² = −(b³ ± b)).
+- title: Die Theorie der algebraischen Zahlkörper
+  authors:
+  - David Hilbert
+  type: paper
+  location: Jahresber. Deutsch. Math.-Verein. 4 (1894/1895), 517–525 (Theorem 169), as cited in the paper
+  relationship: background
+  note: Theorem 2 (x⁴ ± y⁴ = z² has only trivial solutions in ℤ[i]) is Hilbert's result; the formalization proves it by the
+    paper's argument, not Hilbert's. Hilbert's text was not consulted.
+related_formalizations:
+- id: https://github.com/yachi/lean-playground/blob/fa9f1abf44db835b54667120a3c545a7eb2c30e7/LeanPlayground/PerfectCuboid/FermatTriangle.lean
+  relationship: builds-on
+  note: Fermat's right triangle theorem (1 is not a congruent number), used for the rational points of y² = x³ − x. The file
+    is included without proof changes as GaussianQuartics/FermatTriangle.lean (Apache-2.0), with a header naming its source.
+status:
+  scope: The results of the paper over ℤ[i] and ℚ(i), and the groups of ℚ(i)-points of y² = x³ ± x. The extended Lutz–Nagell
+    theorem and the classification of torsion over ℚ(i) quoted in the paper are not formalized; the formal proof does not
+    use them.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+automation:
+  methods:
+  - method: agent
+    models:
+    - gpt-6.2-sol
+    framework: Codex (OpenAI)
+    tool_setup: Codex wrote the Lean definitions, statements and proofs from the paper, in one session, and built them; it
+      chose to vendor FermatTriangle.lean.
+    cost:
+      wall_time: about 25 minutes, in one session (estimated from file times; not recorded)
+      spend_usd: not tracked
+      hardware: a 32-core workstation; models through the API
+    prompting_notes: The author asked Codex to formalize the results of the paper. Codex chose the statements and wrote them
+      together with the proofs; they were not written and frozen before the proofs, as in the author's other formalizations.
+  - method: agent
+    models:
+    - Claude Opus 5.5
+    - Claude Fable 5.1
+    framework: Claude Code
+    tool_setup: Claude Code agents made the Comparator challenge (scripts/make_challenge.py), gave names to three anonymous
+      instances and added one import so that the Challenge and the library elaborate to the same constants, wrote scripts/check_statements.py,
+      ran Comparator, and wrote the README and this metadata. Two separate reviewer agents (Claude Fable 5.1) reviewed the
+      statements against the paper.
+    cost:
+      wall_time: about three hours
+      spend_usd: not tracked
+      hardware: the same workstation; models through the API
+    prompting_notes: Asked by the author to publish the formalization and to treat it like the author's earlier formalizations
+      (Comparator challenge, statement reviews, Palomar metadata).
+  spend_usd: not tracked
+  notes: The author chose the paper and asked for its formalization. The Lean code, statements and proofs included, was written
+    by AI agents. The author has not reviewed the statements; two AI reviewer agents did, after the fact (see review).
+fidelity:
+  divergences: Primitivity is stated as "every common divisor of x, y, z is a unit", i.e. gcd(x, y, z) = 1 in ℤ[i]. ℚ(i) is
+    Mathlib's QuadraticAlgebra ℚ (−1) 0, with generator I, I² = −1. For the two elliptic curves the paper states the torsion
+    subgroups and that the ranks are 0; the formalization states the whole groups of ℚ(i)-points (which implies both) as definitions
+    of type ZMod 2 × ZMod 2 ≃+ E(ℚ(i)) and ZMod 2 × ZMod 4 ≃+ E(ℚ(i)) whose values the Solution supplies; any value of these
+    types is such an isomorphism, so the types are the claims.
+review:
+  status: statements reviewed by two AI reviewer agents, not by the author; proofs machine-checked
+  reviewers: []
+  notes: 'The statements were written by Codex together with the proofs. Afterwards, two AI reviewer agents (Claude Fable
+    5.1), one blind and one adversarial, read them against the paper, with Lean probes and a brute-force search of the solutions
+    over ℤ[i] with real and imaginary parts at most 12 in absolute value, and found no statement whose meaning differs from
+    its description, no reachable junk value, and no way to fill the two definition holes vacuously. Their wording remarks:
+    the docstring of Trivial says "one of its coordinates is zero", while the definition is xyz = 0 (equivalent in ℤ[i] and
+    ℚ(i)); and the paper''s substitution b = −ir should be b = ir. scripts/check_statements.py checks that the compared statements
+    and the definitions they use are exactly those Codex wrote. Comparator checks the challenge against its solution, definitions
+    included. The author has not reviewed the statements.'
+alignment:
+  namespace: GaussianQuartics
+  statements:
+  - source: Theorem 1(i)
+    lean: GaussianQuartics.theorem1i
+    module: GaussianQuartics
+    status: proved
+    note: every solution of x⁴ − y⁴ = iz² in ℤ[i] is trivial (xyz = 0)
+  - source: Theorem 1(ii), with its converse
+    lean: GaussianQuartics.theorem1ii
+    module: GaussianQuartics
+    status: proved
+    note: the nontrivial solutions of x⁴ + y⁴ = iz² in ℤ[i] with gcd(x, y, z) = 1 are exactly x, y ∈ {±1, ±i}, z = ±i(1 +
+      i)
+  - source: Theorem 1(ii), before imposing gcd(x, y, z) = 1
+    lean: GaussianQuartics.gaussian_int_plus_i_iff
+    module: GaussianQuartics
+    status: proved
+    note: the nontrivial solutions of x⁴ + y⁴ = iz² in ℤ[i] are x ∈ {±y, ±iy}, z = ±i(1 + i)y²
+  - source: Theorem 2 (Hilbert), plus sign
+    lean: GaussianQuartics.theorem2_plus
+    module: GaussianQuartics
+    status: proved
+    note: every solution of x⁴ + y⁴ = z² in ℤ[i] is trivial
+  - source: Theorem 2 (Hilbert), minus sign
+    lean: GaussianQuartics.theorem2_minus
+    module: GaussianQuartics
+    status: proved
+    note: every solution of x⁴ − y⁴ = z² in ℤ[i] is trivial
+  - source: 'Remark after Theorem 2: Theorem 1(i) over ℚ(i)'
+    lean: GaussianQuartics.rat_minus_i_trivial
+    module: GaussianQuartics.FieldClassification
+    status: proved
+    note: every solution of x⁴ − y⁴ = iz² in ℚ(i) is trivial
+  - source: 'Remark after Theorem 2: Theorem 1(ii) over ℚ(i)'
+    lean: GaussianQuartics.rat_plus_i_iff
+    module: GaussianQuartics.FieldClassification
+    status: proved
+    note: the nontrivial solutions of x⁴ + y⁴ = iz² in ℚ(i) are x ∈ {±y, ±iy}, z = ±i(1 + i)y²
+  - source: 'Remark after Theorem 2: Theorem 2 over ℚ(i), plus sign'
+    lean: GaussianQuartics.rat_hilbert_plus
+    module: GaussianQuartics.FieldClassification
+    status: proved
+    note: every solution of x⁴ + y⁴ = z² in ℚ(i) is trivial
+  - source: 'Remark after Theorem 2: Theorem 2 over ℚ(i), minus sign'
+    lean: GaussianQuartics.rat_hilbert_minus
+    module: GaussianQuartics.FieldClassification
+    status: proved
+    note: every solution of x⁴ − y⁴ = z² in ℚ(i) is trivial
+  - source: 'Proof of Theorem 1(i): E(ℚ(i)) for E : y² = x³ + x'
+    lean: GaussianQuartics.plusPointGroup
+    module: GaussianQuartics.PointGroups
+    status: proved
+    note: 'a definition whose value the Solution supplies: an additive isomorphism ℤ/2 × ℤ/2 ≃ E(ℚ(i)), the point at infinity
+      included; its type is the claim that E(ℚ(i)) ≅ ℤ/2 × ℤ/2'
+  - source: 'Proof of Theorem 1(ii): E(ℚ(i)) for E : y² = x³ − x'
+    lean: GaussianQuartics.minusPointGroup
+    module: GaussianQuartics.PointGroups
+    status: proved
+    note: 'a definition whose value the Solution supplies: an additive isomorphism ℤ/2 × ℤ/4 ≃ E(ℚ(i)), the point at infinity
+      included; its type is the claim that E(ℚ(i)) ≅ ℤ/2 × ℤ/4'
+acknowledgements: Mathlib. Comparator (leanprover/comparator). Fermat's right triangle theorem from yachi's lean-playground.
