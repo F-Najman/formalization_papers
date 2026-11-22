@@ -1,9 +1,21 @@
 # Products of three factorials in Lean
 
-This is a partial formalization of the paper by Andrej Dujella, Filip Najman,
-N. Saradha and Tarlok N. Shorey. It uses the expanded local review dated 5
-November 2026, especially `checked-repairs.txt` and the integral-point
-calculation for $D=104006$. [Paper](https://web.math.pmf.unizg.hr/~fnajman/bnss.pdf)
+A partial Lean 4 / Mathlib formalization of
+
+> A. Dujella, F. Najman, N. Saradha, T. N. Shorey, *Products of three factorials*, Publ. Math. Debrecen **85**
+> (2014), 123–130, [doi:10.5486/PMD.2014.5835](https://doi.org/10.5486/PMD.2014.5835),
+> [PDF](https://web.math.pmf.unizg.hr/~fnajman/bnss.pdf).
+
+The formalization was guided by an AI review of the paper (November 2026, not published), so that only correct
+claims are proved; "the review" below refers to it. In particular, the proof of Theorem 1.2(b) uses that every
+prime P_i in the statement is at most a₃, which can fail (for example N = 2738 = 2·37² at a₃ = 26); the Lean
+versions of part (b) add a hypothesis that excludes this. Some results take a step that is not formalized as an
+explicit premise; these premises are named below. No `sorry`; every result depends only on the standard axioms
+`propext`, `Classical.choice` and `Quot.sound`. About 3,300 lines of Lean, on Lean v4.35.0 and Mathlib v4.35.0,
+using Lean's module system.
+
+The Lean code was written by Codex (an AI coding agent) at the author's request. The statements have not yet been
+reviewed by the author.
 
 ## Theorem 1.1 at $a_3=26$
 
@@ -77,3 +89,7 @@ separate replay.
 ```sh
 magma -bn Replay26.m
 ```
+
+## License
+
+Apache-2.0 (see [`LICENSE`](../LICENSE) at the root of this repository).
