@@ -14,7 +14,7 @@ A partial Lean 4 / Mathlib formalization of
   `Classical.choice` and `Quot.sound`. Three theorems take an unformalized step as an explicit premise; they are
   marked *conditional* below.
 * [`Challenge.lean`](Challenge.lean) states all of them, with `sorry` as proofs, together with every definition they
-  use, over Mathlib alone (308 lines). [Comparator](https://github.com/leanprover/comparator) checks that the library
+  use, over Mathlib alone (300 lines). [Comparator](https://github.com/leanprover/comparator) checks that the library
   proves exactly these statements about exactly these definitions.
 * About 3,300 lines of Lean, on Lean v4.35.0 and Mathlib v4.35.0, using Lean's module system.
 
@@ -46,26 +46,26 @@ solutions).
 
 | paper | statement | proof | in words |
 |---|---|---|---|
-| equation (5) | [`solution_iff_squarefree`](Challenge.lean#L153) | [Basic.lean](ThreeFactorials/Basic.lean#L63) | if n! = d·k² with d squarefree, then (a, n) is a solution iff a(a − 1)(a − 2) = d·t² for some t |
-| Theorem 1.1, a₃ = 26 | [`solution324_26`](Challenge.lean#L165), [`solution2738_26`](Challenge.lean#L167) | [Case26.lean](ThreeFactorials/Case26.lean#L32) | (324, 26) and (2738, 26) are solutions |
-| Theorem 1.1, a₃ = 26 | [`case26_iff`](Challenge.lean#L220) | [Case26Final.lean](ThreeFactorials/Case26Final.lean#L108) | (a, 26) is a solution iff a = 324 or a = 2738; unconditional |
-| proof of Theorem 1.1, a₃ = 26 | [`solution26_remaining`](Challenge.lean#L191) | [Pell26.lean](ThreeFactorials/Pell26.lean#L310) | a solution (a, 26) has a = x², a − 1 = 323y², a − 2 = 322z² or a = 2x², a − 1 = 2737y², a − 2 = 19z² (positive x, y, z): the congruence sieve, fundamental units, and the quartic case exclude the other systems |
-| proof of Theorem 1.1, equation (8) for a₃ = 26 | [`quartic104006_no_solution`](Challenge.lean#L187) | [Pell26.lean](ThreeFactorials/Pell26.lean#L164) | y⁴ = 104006w² + 1 has no solution with w > 0 |
-| (not in the paper) | [`unique_first_system`](Challenge.lean#L210) | [Case26Final.lean](ThreeFactorials/Case26Final.lean#L78) | x² = 323y² + 1, 322z² + 1 = 323y², y > 0 only for (x, y, z) = (18, 1, 1) |
-| (not in the paper) | [`unique_second_system`](Challenge.lean#L215) | [Case26Final.lean](ThreeFactorials/Case26Final.lean#L93) | 2x² = 2737y² + 1, 19z² + 1 = 2737y², y > 0 only for (x, y, z) = (37, 1, 12) |
-| Theorem 1.1, a₃ = 26, the paper's route | [`integralPoints26_sound`](Challenge.lean#L170) | [Case26.lean](ThreeFactorials/Case26.lean#L46) | the 13 listed points lie on Y² = X³ − 104006²X |
-| | [`case26_iff_of_integral_points`](Challenge.lean#L174) | [Case26.lean](ThreeFactorials/Case26.lean#L60) | *conditional:* the same classification, assuming `IntegralPoints26Complete` (the 13 listed points are all the integral points, up to sign, on Y² = X³ − 104006²X); an alternative derivation, implied by `case26_iff` |
-| Theorem 1.1, a₃ = 26, by Bennett's theorem | [`case26_iff_of_bennett`](Challenge.lean#L197) | [Pell26.lean](ThreeFactorials/Pell26.lean#L353) | *conditional:* the same classification, assuming `BennettConsecutiveUnique`, a consequence of Bennett's theorem that ax² − by² = 1, by² − cz² = 1 has at most one solution in positive integers; an alternative derivation, implied by `case26_iff` |
-| Theorem 1.1, the listed solutions | [`solutionsUpTo100_sound`](Challenge.lean#L230) | [Classification.lean](ThreeFactorials/Classification.lean#L14) | the seven pairs (10, 6), (50, 3), (50, 4), (324, 26), (352, 13), (442, 18), (2738, 26) are solutions with a₃ ≤ 100 |
-| Theorem 1.1 | [`theorem11_iff_of_completeness`](Challenge.lean#L234) | [Classification.lean](ThreeFactorials/Classification.lean#L27) | *conditional:* Theorem 1.1 as stated, assuming its completeness direction (every solution with a₃ ≤ 100 is listed); this adds nothing to `solutionsUpTo100_sound` |
-| Theorem 1.2(a) | [`theorem12a`](Challenge.lean#L256) | [Bounds.lean](ThreeFactorials/Bounds.lean#L60) | a > (n/2)^⌈h/3⌉, where h is the number of primes in (n/2, n] |
-| Theorem 1.2(b), changed hypothesis | [`theorem12b_fraction`](Challenge.lean#L260) | [Bounds.lean](ThreeFactorials/Bounds.lean#L148) | if N ∈ {a, a − 1, a − 2} is α times a product of s ≤ ⌈h/3⌉ factors, each at most n, then α > n^(⌈h/3⌉−s)/2^⌈h/3⌉ − 2/n^s |
-| Theorem 1.2(b), changed hypothesis | [`theorem12b_odd`](Challenge.lean#L269) | [Bounds.lean](ThreeFactorials/Bounds.lean#L216) | the same bound, in the form α·n^s + 2 > (n/2)^⌈h/3⌉, when the factors are primes p whose exponent in N is odd |
-| proof of Theorem 1.2, observation 3 | [`interval_card_ge_eleven`](Challenge.lean#L284) | [IntervalPrimes.lean](ThreeFactorials/IntervalPrimes.lean#L204) | there are at least 11 primes in (n/2, n] for n ≥ 101 |
-| Theorem 1.2(c), a₃ ≥ 101 | [`theorem12c_large`](Challenge.lean#L297) | [ForbiddenForms.lean](ThreeFactorials/ForbiddenForms.lean#L253) | for n ≥ 101 no N ∈ {a, a − 1, a − 2} is αP₁ (α ≤ 64393), αP₁³ (α ≤ 6), αP₁P₂ (α ≤ 637) or αP₁P₂P₃ (α ≤ 6), with distinct primes Pᵢ (of any size) |
-| Theorem 1.2(c) | [`theorem12c_of_classification`](Challenge.lean#L301) | [ForbiddenForms.lean](ThreeFactorials/ForbiddenForms.lean#L303) | *conditional:* Theorem 1.2(c) as stated, with its exceptions, assuming the completeness direction of Theorem 1.1 |
-| proof of Theorem 1.2(b) | [`prime_support_counterexample`](Challenge.lean#L239) | [Classification.lean](ThreeFactorials/Classification.lean#L33) | (2738, 26) is a solution and 2738 = 2·37² with 37 > 26: a prime factor of N can exceed a₃ |
-| §2, after equation (8) | [`auxiliary_quartic_six`](Challenge.lean#L243) | [Classification.lean](ThreeFactorials/Classification.lean#L38) | 6! = 5·12², 5 is squarefree, and 3⁴ = 5·4² + 1 |
+| equation (5) | [`solution_iff_squarefree`](Challenge.lean#L145) | [Basic.lean](ThreeFactorials/Basic.lean#L63) | if n! = d·k² with d squarefree, then (a, n) is a solution iff a(a − 1)(a − 2) = d·t² for some t |
+| Theorem 1.1, a₃ = 26 | [`solution324_26`](Challenge.lean#L157), [`solution2738_26`](Challenge.lean#L159) | [Case26.lean](ThreeFactorials/Case26.lean#L32) | (324, 26) and (2738, 26) are solutions |
+| Theorem 1.1, a₃ = 26 | [`case26_iff`](Challenge.lean#L212) | [Case26Final.lean](ThreeFactorials/Case26Final.lean#L108) | (a, 26) is a solution iff a = 324 or a = 2738; unconditional |
+| proof of Theorem 1.1, a₃ = 26 | [`solution26_remaining`](Challenge.lean#L183) | [Pell26.lean](ThreeFactorials/Pell26.lean#L310) | a solution (a, 26) has a = x², a − 1 = 323y², a − 2 = 322z² or a = 2x², a − 1 = 2737y², a − 2 = 19z² (positive x, y, z): the congruence sieve, fundamental units, and the quartic case exclude the other systems |
+| proof of Theorem 1.1, equation (8) for a₃ = 26 | [`quartic104006_no_solution`](Challenge.lean#L179) | [Pell26.lean](ThreeFactorials/Pell26.lean#L164) | y⁴ = 104006w² + 1 has no solution with w > 0 |
+| (not in the paper) | [`unique_first_system`](Challenge.lean#L202) | [Case26Final.lean](ThreeFactorials/Case26Final.lean#L78) | x² = 323y² + 1, 322z² + 1 = 323y², y > 0 only for (x, y, z) = (18, 1, 1) |
+| (not in the paper) | [`unique_second_system`](Challenge.lean#L207) | [Case26Final.lean](ThreeFactorials/Case26Final.lean#L93) | 2x² = 2737y² + 1, 19z² + 1 = 2737y², y > 0 only for (x, y, z) = (37, 1, 12) |
+| Theorem 1.1, a₃ = 26, the paper's route | [`integralPoints26_sound`](Challenge.lean#L162) | [Case26.lean](ThreeFactorials/Case26.lean#L46) | the 13 listed points lie on Y² = X³ − 104006²X |
+| | [`case26_iff_of_integral_points`](Challenge.lean#L166) | [Case26.lean](ThreeFactorials/Case26.lean#L60) | *conditional:* the same classification, assuming `IntegralPoints26Complete` (the 13 listed points are all the integral points, up to sign, on Y² = X³ − 104006²X); an alternative derivation, implied by `case26_iff` |
+| Theorem 1.1, a₃ = 26, by Bennett's theorem | [`case26_iff_of_bennett`](Challenge.lean#L189) | [Pell26.lean](ThreeFactorials/Pell26.lean#L353) | *conditional:* the same classification, assuming `BennettConsecutiveUnique`, a consequence of Bennett's theorem that ax² − by² = 1, by² − cz² = 1 has at most one solution in positive integers; an alternative derivation, implied by `case26_iff` |
+| Theorem 1.1, the listed solutions | [`solutionsUpTo100_sound`](Challenge.lean#L222) | [Classification.lean](ThreeFactorials/Classification.lean#L14) | the seven pairs (10, 6), (50, 3), (50, 4), (324, 26), (352, 13), (442, 18), (2738, 26) are solutions with a₃ ≤ 100 |
+| Theorem 1.1 | [`theorem11_iff_of_completeness`](Challenge.lean#L226) | [Classification.lean](ThreeFactorials/Classification.lean#L27) | *conditional:* Theorem 1.1 as stated, assuming its completeness direction (every solution with a₃ ≤ 100 is listed); this adds nothing to `solutionsUpTo100_sound` |
+| Theorem 1.2(a) | [`theorem12a`](Challenge.lean#L248) | [Bounds.lean](ThreeFactorials/Bounds.lean#L60) | a > (n/2)^⌈h/3⌉, where h is the number of primes in (n/2, n] |
+| Theorem 1.2(b), changed hypothesis | [`theorem12b_fraction`](Challenge.lean#L252) | [Bounds.lean](ThreeFactorials/Bounds.lean#L148) | if N ∈ {a, a − 1, a − 2} is α times a product of s ≤ ⌈h/3⌉ factors, each at most n, then α > n^(⌈h/3⌉−s)/2^⌈h/3⌉ − 2/n^s |
+| Theorem 1.2(b), changed hypothesis | [`theorem12b_odd`](Challenge.lean#L261) | [Bounds.lean](ThreeFactorials/Bounds.lean#L216) | the same bound, in the form α·n^s + 2 > (n/2)^⌈h/3⌉, when the factors are primes p whose exponent in N is odd |
+| proof of Theorem 1.2, observation 3 | [`interval_card_ge_eleven`](Challenge.lean#L276) | [IntervalPrimes.lean](ThreeFactorials/IntervalPrimes.lean#L204) | there are at least 11 primes in (n/2, n] for n ≥ 101 |
+| Theorem 1.2(c), a₃ ≥ 101 | [`theorem12c_large`](Challenge.lean#L289) | [ForbiddenForms.lean](ThreeFactorials/ForbiddenForms.lean#L253) | for n ≥ 101 no N ∈ {a, a − 1, a − 2} is αP₁ (α ≤ 64393), αP₁³ (α ≤ 6), αP₁P₂ (α ≤ 637) or αP₁P₂P₃ (α ≤ 6), with distinct primes Pᵢ (of any size) |
+| Theorem 1.2(c) | [`theorem12c_of_classification`](Challenge.lean#L293) | [ForbiddenForms.lean](ThreeFactorials/ForbiddenForms.lean#L303) | *conditional:* Theorem 1.2(c) as stated, with its exceptions, assuming the completeness direction of Theorem 1.1 |
+| proof of Theorem 1.2(b) | [`prime_support_counterexample`](Challenge.lean#L231) | [Classification.lean](ThreeFactorials/Classification.lean#L33) | (2738, 26) is a solution and 2738 = 2·37² with 37 > 26: a prime factor of N can exceed a₃ |
+| §2, after equation (8) | [`auxiliary_quartic_six`](Challenge.lean#L235) | [Classification.lean](ThreeFactorials/Classification.lean#L38) | 6! = 5·12², 5 is squarefree, and 3⁴ = 5·4² + 1 |
 
 Definitions used by the statements (all in [`Challenge.lean`](Challenge.lean)):
 
