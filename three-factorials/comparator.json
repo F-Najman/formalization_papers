@@ -1,0 +1,33 @@
+{
+    "challenge_module": "Challenge",
+    "solution_module": "Solution",
+    "theorem_names": [
+        "ThreeFactorials.solution_iff_squarefree",
+        "ThreeFactorials.solution324_26",
+        "ThreeFactorials.solution2738_26",
+        "ThreeFactorials.integralPoints26_sound",
+        "ThreeFactorials.case26_iff_of_integral_points",
+        "ThreeFactorials.quartic104006_no_solution",
+        "ThreeFactorials.solution26_remaining",
+        "ThreeFactorials.case26_iff_of_bennett",
+        "ThreeFactorials.unique_first_system",
+        "ThreeFactorials.unique_second_system",
+        "ThreeFactorials.case26_iff",
+        "ThreeFactorials.solutionsUpTo100_sound",
+        "ThreeFactorials.theorem11_iff_of_completeness",
+        "ThreeFactorials.prime_support_counterexample",
+        "ThreeFactorials.auxiliary_quartic_six",
+        "ThreeFactorials.theorem12a",
+        "ThreeFactorials.theorem12b_fraction",
+        "ThreeFactorials.theorem12b_odd",
+        "ThreeFactorials.interval_card_ge_eleven",
+        "ThreeFactorials.theorem12c_large",
+        "ThreeFactorials.theorem12c_of_classification"
+    ],
+    "definition_names": [],
+    "permitted_axioms": [
+        "propext",
+        "Quot.sound",
+        "Classical.choice"
+    ]
+}

@@ -1,0 +1,237 @@
+# Palomar metadata (formalization.yaml v0.4) of this project; see README.md.
+version: v0.4
+project:
+  name: Products of three factorials (partial)
+  description: 'Formal statements and proofs, in Lean 4 with Mathlib, of parts of A. Dujella, F. Najman, N. Saradha, T. N.
+    Shorey, "Products of three factorials" (Publ. Math. Debrecen 85 (2014)), on the equation a₁!(a₁ − 3)!a₃! = y². Proved
+    unconditionally: Theorem 1.1 for a₃ = 26 (the only solutions are a₁ = 324 and a₁ = 2738), by reducing to squarefree Pell
+    systems, excluding all but two of them with congruences, fundamental units and an elementary argument for the quartic
+    case, and solving the last two with simultaneous Padé approximations; that the seven pairs listed in Theorem 1.1 are solutions;
+    Theorem 1.2(a); Theorem 1.2(b) in two forms with changed hypotheses, because the proof of the printed part (b) has a gap;
+    and Theorem 1.2(c) for a₃ ≥ 101. The completeness of Theorem 1.1 for a₃ ≤ 100 is not proved; it appears only as an explicit
+    premise, as do the completeness of a Magma computation of integral points and a consequence of a theorem of Bennett, in
+    alternative derivations. 21 theorems, no sorry, only the axioms propext, Classical.choice and Quot.sound.'
+  authors:
+  - Filip Najman
+  responsible_maintainers:
+  - Filip Najman
+  license: Apache-2.0
+classification:
+  arxiv:
+  - math.NT
+  msc2020:
+  - 11D09
+  - 11B65
+  - 11J68
+  - 11D25
+  - 68V20
+sources:
+- title: Products of three factorials
+  authors:
+  - Andrej Dujella
+  - Filip Najman
+  - N. Saradha
+  - Tarlok N. Shorey
+  id: doi:10.5486/PMD.2014.5835
+  type: paper
+  location: Publ. Math. Debrecen 85 (2014), no. 1-2, 123–130
+  relationship: formalizes
+  note: 'Formalized: Theorem 1.1 for a₃ = 26 (unconditionally, by a different final step: simultaneous Padé approximations
+    instead of the integral points on Y² = X³ − 104006²X); equation (5); equation (8) for a₃ = 26; the listed solutions of
+    Theorem 1.1; Theorem 1.2(a); Theorem 1.2(b) with changed hypotheses; Theorem 1.2(c) for a₃ ≥ 101, and with its exceptions
+    assuming the completeness of Theorem 1.1. Not formalized: the completeness of Theorem 1.1 for a₃ ≤ 100 other than 26,
+    and Theorem 1.2(b) as printed. Two statements of the paper are contradicted by Lean checks: the proof of Theorem 1.2(b)
+    assumes that every prime Pᵢ is at most a₃, but 2738 = 2·37² occurs at a₃ = 26 (a gap in the proof, not a counterexample
+    to part (b)); and equation (8) has a positive solution at a₃ = 6 (3⁴ − 5·4² = 1), which the paper''s list a₃ = 3, 4, 18
+    omits.'
+- title: On consecutive integers of the form ax², by² and cz²
+  authors:
+  - Michael A. Bennett
+  id: doi:10.4064/aa-88-4-363-370
+  type: paper
+  location: Acta Arith. 88 (1999), no. 4, 363–370
+  relationship: background
+  note: The premise BennettConsecutiveUnique of case26_iff_of_bennett (for positive A, B, C, two positive solutions of Ax²
+    = By² + 1, By² = Cz² + 1 have the same x) follows from Bennett's theorem that such a system has at most one solution in
+    positive integers (as stated in the zbMATH review of the paper; the paper itself was not consulted). The unconditional
+    theorem case26_iff does not use it.
+status:
+  scope: Theorem 1.1 for a₃ = 26 and the soundness of its list of solutions; Theorem 1.2(a), (b) with changed hypotheses,
+    and (c) for a₃ ≥ 101. The classification of Theorem 1.1 for the other a₃ ≤ 100, which the paper obtains by computations
+    (elliptic curves, Pell equations, compact representations of fundamental units), is not formalized; theorem11_iff_of_completeness
+    and theorem12c_of_classification take it as a premise, and case26_iff_of_integral_points takes the completeness of a Magma
+    computation as a premise.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+automation:
+  methods:
+  - method: agent
+    models:
+    - gpt-6.2-sol
+    framework: Codex (OpenAI)
+    tool_setup: Codex (reasoning effort xhigh) wrote the Lean definitions, statements and proofs, in one session on 2026-11-21,
+      with access to an AI review of the paper made earlier on the same machine, and built them; low-effort codex-auto-review
+      sessions ran alongside it. It also wrote the optional Magma replay Replay26.m.
+    cost:
+      wall_time: about 1 hour 45 minutes (two requests, 2026-11-21, 14:14–15:58 UTC, from the session log)
+      spend_usd: not tracked
+      hardware: a 32-core workstation; models through the API
+    prompting_notes: 'The author''s requests, verbatim: "Can you formalize the whole paper Products of three factorials in
+      Lean? Start by proving that a₁ = 324 and 2738 are the only solutions when a₃ = 26 in Theorem 1.1. Please take a look
+      at the the review we made of our paper on this machine, so we can also prove only correct claims." and "Can you now
+      prove uniqueness in the two remaining squarefree systems in Lean, so that the a₃ = 26 case is unconditional?" Codex
+      chose the statements and wrote them together with the proofs.'
+  - method: agent
+    models:
+    - Claude Opus 5.5
+    - Claude Fable 5.2
+    framework: Claude Code
+    tool_setup: Claude Code agents made the Comparator challenge (scripts/make_challenge.py), wrote scripts/check_statements.py,
+      ran Comparator, and wrote the README and this metadata; the library is unchanged from Codex's commit. Two separate reviewer
+      agents (Claude Fable 5.2), one blind and one adversarial, reviewed the statements against the paper.
+    cost:
+      wall_time: about two hours
+      spend_usd: not tracked
+      hardware: the same workstation; models through the API
+    prompting_notes: Asked by the author to publish the formalization in the repository F-Najman/formalization_papers and
+      to make a Comparator challenge, independent statement reviews and a Palomar submission, as for the author's earlier
+      formalization in the same repository.
+  spend_usd: not tracked
+  notes: The author chose the paper and asked for its formalization. The Lean code, statements and proofs included, was written
+    by AI agents. The author has not reviewed the statements; two AI reviewer agents did, after the fact (see review).
+fidelity:
+  divergences: 'Solution a n is equation (3) with a − 3 > n > 1, as in the paper. Theorem 1.2(b) is not formalized as printed:
+    theorem12b_fraction assumes that every factor is at most a₃ and drops primality and parity (it is then a consequence of
+    part (a)); theorem12b_odd assumes primes whose exponent in N, rather than in N₁, is odd, and states the bound multiplied
+    out. In theorem12c_large the primes Pᵢ are distinct and of any size (the paper''s proof treats primes up to a₃). theorem11_iff_of_completeness
+    assumes the completeness direction of Theorem 1.1, so it adds nothing to solutionsUpTo100_sound; theorem12c_of_classification
+    uses the same premise. case26_iff_of_integral_points and case26_iff_of_bennett are alternative derivations of case26_iff,
+    with premises.'
+review:
+  status: statements reviewed by two AI reviewer agents, not by the author; proofs machine-checked
+  reviewers: []
+  notes: 'The statements were written by Codex together with the proofs. Afterwards, two AI reviewer agents (Claude Fable
+    5.2), one blind and one adversarial, read them against the paper, with Lean probes, a comparison of the elaborated statements
+    in the Challenge and the library, a brute-force search of the equation (a₁ ≤ 2·10⁷, a₃ ≤ 100, which found exactly the
+    seven listed pairs), and a rerun of the Magma computation of the integral points. They found no blocking problem: every
+    compared statement means what its description says. Their minor findings concern the presentation and are reflected in
+    the README and in this metadata: the conditional theorems and what they assume (in particular that theorem11_iff_of_completeness
+    assumes the hard direction of Theorem 1.1), the changed hypotheses of the two versions of Theorem 1.2(b), the reading
+    of prime_support_counterexample as a gap in a proof rather than a counterexample to a theorem, the convention a − 3 >
+    n > 1 in Solution, and distinct primes in ForbiddenForm. scripts/check_statements.py checks that the compared statements
+    and the definitions they use are exactly those Codex wrote. Comparator checks the challenge against its solution, definitions
+    included. The author has not reviewed the statements.'
+alignment:
+  namespace: ThreeFactorials
+  statements:
+  - source: Equation (5)
+    lean: ThreeFactorials.solution_iff_squarefree
+    module: ThreeFactorials.Basic
+    status: proved
+    note: if n! = d·k² with d squarefree, then a!(a − 3)!n! is a square (with 1 < n, n + 3 < a) iff a(a − 1)(a − 2) = d·t²
+  - source: 'Theorem 1.1 for a₃ = 26: the solution a₁ = 324'
+    lean: ThreeFactorials.solution324_26
+    module: ThreeFactorials.Case26
+    status: proved
+    note: 324!·321!·26! is a square
+  - source: 'Theorem 1.1 for a₃ = 26: the solution a₁ = 2738'
+    lean: ThreeFactorials.solution2738_26
+    module: ThreeFactorials.Case26
+    status: proved
+    note: 2738!·2735!·26! is a square
+  - source: Theorem 1.1 for a₃ = 26
+    lean: ThreeFactorials.case26_iff
+    module: ThreeFactorials.Case26Final
+    status: proved
+    note: a!(a − 3)!26! is a square (a > 29) iff a = 324 or a = 2738; unconditional
+  - source: 'Proof of Theorem 1.1 for a₃ = 26: the squarefree systems'
+    lean: ThreeFactorials.solution26_remaining
+    module: ThreeFactorials.Pell26
+    status: proved
+    note: a solution with a₃ = 26 has a = x², a − 1 = 323y², a − 2 = 322z² or a = 2x², a − 1 = 2737y², a − 2 = 19z²; the other
+      systems are excluded by congruences, fundamental units and the quartic case
+  - source: 'Proof of Theorem 1.1 for a₃ = 26: equation (8)'
+    lean: ThreeFactorials.quartic104006_no_solution
+    module: ThreeFactorials.Pell26
+    status: proved
+    note: y⁴ = 104006w² + 1 has no solution with w > 0
+  - source: 'Proof of Theorem 1.1 for a₃ = 26: the first remaining system'
+    lean: ThreeFactorials.unique_first_system
+    module: ThreeFactorials.Case26Final
+    status: proved
+    note: x² = 323y² + 1, 322z² + 1 = 323y² with y > 0 has only (x, y, z) = (18, 1, 1); not in the paper, which uses integral
+      points on an elliptic curve instead
+  - source: 'Proof of Theorem 1.1 for a₃ = 26: the second remaining system'
+    lean: ThreeFactorials.unique_second_system
+    module: ThreeFactorials.Case26Final
+    status: proved
+    note: 2x² = 2737y² + 1, 19z² + 1 = 2737y² with y > 0 has only (x, y, z) = (37, 1, 12); not in the paper
+  - source: 'Proof of Theorem 1.1 for a₃ = 26, the paper''s route: the integral points'
+    lean: ThreeFactorials.integralPoints26_sound
+    module: ThreeFactorials.Case26
+    status: proved
+    note: the 13 listed points lie on Y² = X³ − 104006²X
+  - source: Proof of Theorem 1.1 for a₃ = 26, the paper's route
+    lean: ThreeFactorials.case26_iff_of_integral_points
+    module: ThreeFactorials.Case26
+    status: proved, conditional on IntegralPoints26Complete
+    note: the classification for a₃ = 26, assuming that the 13 listed points are all the integral points (up to the sign of
+      Y) on Y² = X³ − 104006²X, a computation (Magma, Replay26.m) that is not formalized
+  - source: Proof of Theorem 1.1 for a₃ = 26, by Bennett's theorem
+    lean: ThreeFactorials.case26_iff_of_bennett
+    module: ThreeFactorials.Pell26
+    status: proved, conditional on BennettConsecutiveUnique
+    note: the classification for a₃ = 26, assuming the statement BennettConsecutiveUnique; see the fidelity notes
+  - source: 'Theorem 1.1: the listed solutions'
+    lean: ThreeFactorials.solutionsUpTo100_sound
+    module: ThreeFactorials.Classification
+    status: proved
+    note: the seven pairs (10, 6), (50, 3), (50, 4), (324, 26), (352, 13), (442, 18), (2738, 26) are solutions
+  - source: Theorem 1.1
+    lean: ThreeFactorials.theorem11_iff_of_completeness
+    module: ThreeFactorials.Classification
+    status: proved, conditional on the completeness direction of Theorem 1.1
+    note: the classification for a₃ ≤ 100 assuming that every solution is listed; only the converse is proved, so this adds
+      nothing beyond solutionsUpTo100_sound
+  - source: Theorem 1.2(a)
+    lean: ThreeFactorials.theorem12a
+    module: ThreeFactorials.Bounds
+    status: proved
+    note: a₁ > (a₃/2)^⌈h/3⌉, h the number of primes in (a₃/2, a₃]
+  - source: Theorem 1.2(b), with a corrected hypothesis
+    lean: ThreeFactorials.theorem12b_fraction
+    module: ThreeFactorials.Bounds
+    status: proved
+    note: the bound of part (b) when N ∈ {a, a − 1, a − 2} is α times a product of s ≤ ⌈h/3⌉ factors, each at most a₃
+  - source: Theorem 1.2(b), with a corrected hypothesis
+    lean: ThreeFactorials.theorem12b_odd
+    module: ThreeFactorials.Bounds
+    status: proved
+    note: the bound of part (b), multiplied out, when the factors are primes whose exponent in N is odd
+  - source: Proof of Theorem 1.2, observation 3
+    lean: ThreeFactorials.interval_card_ge_eleven
+    module: ThreeFactorials.IntervalPrimes
+    status: proved
+    note: at least 11 primes in (n/2, n] for n ≥ 101
+  - source: Theorem 1.2(c) for a₃ ≥ 101
+    lean: ThreeFactorials.theorem12c_large
+    module: ThreeFactorials.ForbiddenForms
+    status: proved
+    note: for a₃ ≥ 101 none of a, a − 1, a − 2 has one of the four forms of part (c)
+  - source: Theorem 1.2(c)
+    lean: ThreeFactorials.theorem12c_of_classification
+    module: ThreeFactorials.ForbiddenForms
+    status: proved, conditional on the completeness direction of Theorem 1.1
+    note: part (c) with its exceptions for all a₃, assuming the completeness of Theorem 1.1
+  - source: Erratum to the proof of Theorem 1.2(b)
+    lean: ThreeFactorials.prime_support_counterexample
+    module: ThreeFactorials.Classification
+    status: proved
+    note: (2738, 26) is a solution and 2738 = 2·37² with 37 > 26
+  - source: Remark on the quartic case
+    lean: ThreeFactorials.auxiliary_quartic_six
+    module: ThreeFactorials.Classification
+    status: proved
+    note: 6! = 5·12² and 3⁴ = 5·4² + 1
+acknowledgements: Mathlib. Comparator (leanprover/comparator).
