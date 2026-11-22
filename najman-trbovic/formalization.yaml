@@ -51,7 +51,7 @@ sources:
   - Antonela Trbović
   type: other
   location: https://web.math.pmf.unizg.hr/~fnajman/errata_splitting.txt
-  relationship: background
+  relationship: formalizes
   note: The authors' erratum restricts Theorem 2.13 and Table 7 to non-exceptional quadratic points and adds N = 28 to the
     list of levels; table7_field_iff formalizes this corrected statement, and exceptional26 with eleven_ramifies_exceptional26
     check an exceptional point at level 26 that violates the unrestricted statement.
@@ -162,7 +162,8 @@ alignment:
     lean: NajmanTrbovic.quadraticOrder_isIntegralClosure
     module: NajmanTrbovic.QuadraticFields
     status: proved
-    note: for squarefree D, ℤ[ω] (ω = √D, or (1+√D)/2 if D ≡ 1 mod 4) is the ring of integers of ℚ(√D)
+    note: for squarefree D, ℤ[ω] (ω = √D, or (1+√D)/2 if D ≡ 1 mod 4) is the integral closure of ℤ in the ℚ-algebra ℚ[ω] =
+      QuadraticField D; for D ≠ 1 this is the ring of integers of ℚ(√D) (for D = 1 the algebra is ℚ[X]/(X² − X), not a field)
   - source: 'Section 2: ℚ(√D)'
     lean: NajmanTrbovic.numberField_discriminant
     module: NajmanTrbovic.QuadraticFields
@@ -422,7 +423,8 @@ alignment:
     lean: NajmanTrbovic.order_discriminant
     module: NajmanTrbovic.QuadraticFields
     status: proved
-    note: the discriminant of ω² = orderA + orderB·ω is the field discriminant
+    note: for every integer D, the discriminant of ω² = orderA + orderB·ω is quadraticDiscriminant D (D if D ≡ 1 mod 4, 4D
+      otherwise); this is the field discriminant when D is squarefree and D ≠ 1
   - source: used inside the instance quadraticField
     lean: NajmanTrbovic.radicand_not_square
     module: NajmanTrbovic.QuadraticFields
