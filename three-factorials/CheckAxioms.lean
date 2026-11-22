@@ -1,0 +1,25 @@
+import ThreeFactorials
+
+#print axioms ThreeFactorials.solution_iff_squarefree
+#print axioms ThreeFactorials.solution324_26
+#print axioms ThreeFactorials.solution2738_26
+#print axioms ThreeFactorials.integralPoints26_sound
+#print axioms ThreeFactorials.case26_iff_of_integral_points
+#print axioms ThreeFactorials.quartic104006_no_solution
+#print axioms ThreeFactorials.solution26_remaining
+#print axioms ThreeFactorials.case26_iff_of_bennett
+#print axioms ThreeFactorials.pade_matrix_det_ne_zero
+#print axioms ThreeFactorials.pade_approximations
+#print axioms ThreeFactorials.unique_first_system
+#print axioms ThreeFactorials.unique_second_system
+#print axioms ThreeFactorials.case26_iff
+#print axioms ThreeFactorials.solutionsUpTo100_sound
+#print axioms ThreeFactorials.theorem11_iff_of_completeness
+#print axioms ThreeFactorials.prime_support_counterexample
+#print axioms ThreeFactorials.auxiliary_quartic_six
+#print axioms ThreeFactorials.theorem12a
+#print axioms ThreeFactorials.theorem12b_fraction
+#print axioms ThreeFactorials.theorem12b_odd
+#print axioms ThreeFactorials.interval_card_ge_eleven
+#print axioms ThreeFactorials.theorem12c_large
+#print axioms ThreeFactorials.theorem12c_of_classification
