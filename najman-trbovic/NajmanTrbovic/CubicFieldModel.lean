@@ -1,0 +1,191 @@
+module
+
+public import NajmanTrbovic.CubicLocal
+public import NajmanTrbovic.CubicTensor
+public import NajmanTrbovic.Table7
+
+import Mathlib.Tactic
+import Mathlib.Tactic.ComputeDegree
+
+/-! The projective lifts give a split algebra for the cubic field of an explicit fiber. -/
+
+@[expose] public section
+
+noncomputable section
+
+namespace NajmanTrbovic.Cubic
+
+open scoped TensorProduct
+open Polynomial
+
+private theorem fibre_scale_second {R : Type*} [CommRing R] (u w c v z : R) :
+    fibre u w (c*v) (c*z) = c^3*fibre u w v z := by
+  unfold fibre r
+  ring
+
+private theorem map_fibre {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (u w v z : R) :
+    f (fibre u w v z) = fibre (f u) (f w) (f v) (f z) := by
+  simp [fibre, r, map_ofNat]
+
+private theorem denominator_nonzero {p : ℕ} [Fact p.Prime] {u w : ℤ_[p]} (hc : u*w*(u+w) ≠ 0)
+    {a : ℤ_[p] × ℤ_[p]} (h : fibre u w a.1 a.2 = 0) (h₀ : a.1 ≠ 0 ∨ a.2 ≠ 0) :
+    a.2 ≠ 0 := by
+  intro hz
+  have hv : a.1 ≠ 0 := h₀.resolve_right (not_not.mpr hz)
+  rw [hz] at h
+  have hh : a.1^3 * (u*w*(u+w)) = 0 := by simpa [fibre, r] using h
+  exact (mul_ne_zero (pow_ne_zero _ hv) hc) hh
+
+private def ratio {p : ℕ} [Fact p.Prime] (a : ℤ_[p] × ℤ_[p]) : ℚ_[p] :=
+  (a.1 : ℚ_[p]) / (a.2 : ℚ_[p])
+
+private theorem root_of_projective {p : ℕ} [Fact p.Prime] {u w : ℤ_[p]}
+    {a : ℤ_[p] × ℤ_[p]} (h : fibre u w a.1 a.2 = 0) (h₂ : a.2 ≠ 0) :
+    (finiteChart (u : ℚ_[p]) (w : ℚ_[p])).eval (ratio a) = 0 := by
+  have hc : (a.2 : ℚ_[p]) ≠ 0 := fun hz => h₂ (PadicInt.coe_inj.mp hz)
+  have hh := congrArg (PadicInt.Coe.ringHom (p := p)) h
+  have hF : fibre (u : ℚ_[p]) (w : ℚ_[p]) (a.1 : ℚ_[p]) (a.2 : ℚ_[p]) = 0 := by
+    rw [map_fibre, map_zero] at hh
+    exact hh
+  rw [finite_eval]
+  calc
+    _ = fibre (u : ℚ_[p]) (w : ℚ_[p]) ((a.2 : ℚ_[p])⁻¹*(a.1 : ℚ_[p]))
+        ((a.2 : ℚ_[p])⁻¹*(a.2 : ℚ_[p])) := by rw [inv_mul_cancel₀ hc, ratio, div_eq_mul_inv, mul_comm (a.1 : ℚ_[p])]
+    _ = _ := by rw [fibre_scale_second, hF, mul_zero]
+
+private theorem ratio_ne {p : ℕ} [Fact p.Prime] {a b : ℤ_[p] × ℤ_[p]}
+    (ha : a.2 ≠ 0) (hb : b.2 ≠ 0) (h : DistinctReductions a b) : ratio a ≠ ratio b := by
+  intro he
+  have ha' : (a.2 : ℚ_[p]) ≠ 0 := fun hz => ha (PadicInt.coe_inj.mp hz)
+  have hb' : (b.2 : ℚ_[p]) ≠ 0 := fun hz => hb (PadicInt.coe_inj.mp hz)
+  have hmul := (div_eq_div_iff ha' hb').mp he
+  have h₀ : a.1*b.2 = b.1*a.2 := PadicInt.coe_inj.mp hmul
+  apply h
+  rw [← map_mul, ← map_mul, h₀, sub_self]
+
+theorem affine_roots_of_projective_lifts {p : ℕ} [Fact p.Prime] {u w : ℤ_[p]}
+    (hc : u*w*(u+w) ≠ 0) (h : ThreeProjectiveLifts u w) :
+    ∃ ρ : Fin 3 → ℚ_[p], Function.Injective ρ ∧
+      ∀ i, (finiteChart (u : ℚ_[p]) (w : ℚ_[p])).eval (ρ i) = 0 := by
+  obtain ⟨a, b, c, ha, hb, hcc, hab, hac, hbc⟩ := h
+  have first {x y : ℤ_[p] × ℤ_[p]} (hxy : DistinctReductions x y) : x.1 ≠ 0 ∨ x.2 ≠ 0 := by
+    by_contra! he
+    exact hxy (by simp [he.1, he.2])
+  have second {x y : ℤ_[p] × ℤ_[p]} (hxy : DistinctReductions x y) : y.1 ≠ 0 ∨ y.2 ≠ 0 := by
+    by_contra! he
+    exact hxy (by simp [he.1, he.2])
+  have hA := denominator_nonzero hc ha (first hab)
+  have hB := denominator_nonzero hc hb (second hab)
+  have hC := denominator_nonzero hc hcc (second hac)
+  let ρ : Fin 3 → ℚ_[p] := ![ratio a, ratio b, ratio c]
+  have hab' := ratio_ne hA hB hab
+  have hac' := ratio_ne hA hC hac
+  have hbc' := ratio_ne hB hC hbc
+  refine ⟨ρ, ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;>
+      first | rfl | exact (hab' hij).elim | exact (hab' hij.symm).elim |
+        exact (hac' hij).elim | exact (hac' hij.symm).elim |
+        exact (hbc' hij).elim | exact (hbc' hij.symm).elim
+  · intro i
+    fin_cases i
+    · exact root_of_projective ha hA
+    · exact root_of_projective hb hB
+    · exact root_of_projective hcc hC
+
+private theorem cubic_polynomial {F : Type*} [Field F] (u w : F) (h : u*w*(u+w) ≠ 0) :
+    (finiteChart u w).natDegree = 3 := by
+  have hshape : finiteChart u w = C (u*w*(u+w)) * X^3 +
+      (C (r u w + u*w*(u+w)) * X^2 + C (r u w - 2*(u*w*(u+w))) * X - C (u*w*(u+w))) := by
+    simp only [finiteChart, r, one_pow, mul_one, map_sub, map_add, map_mul, map_ofNat]
+    ring
+  rw [hshape, natDegree_add_eq_left_of_natDegree_lt]
+  · exact natDegree_C_mul_X_pow _ _ h
+  · rw [natDegree_C_mul_X_pow _ _ h]
+    compute_degree
+    decide
+
+/-- Every nonrational element of a cubic extension of ℚ has minimal polynomial of degree three. -/
+theorem minpoly_degree_three {K : Type*} [Field K] [Algebra ℚ K] [FiniteDimensional ℚ K]
+    (hK : Module.finrank ℚ K = 3) (α : K) (hα : α ∉ Set.range (algebraMap ℚ K)) :
+    (minpoly ℚ α).natDegree = 3 := by
+  have hi : IsIntegral ℚ α := IsIntegral.of_finite ℚ α
+  have hd := minpoly.degree_dvd hi
+  rw [hK] at hd
+  rcases (Nat.dvd_prime (by decide : Nat.Prime 3)).mp hd with h | h
+  · have h₁ := (IntermediateField.adjoin.finrank hi).trans h
+    exact (hα (IntermediateField.mem_bot.mp (IntermediateField.finrank_adjoin_simple_eq_one_iff.mp h₁))).elim
+  · exact h
+
+/-- A cubic field generated by a root of the explicit fiber splits after p-adic base change
+whenever the three distinct projective lifts exist. -/
+theorem cubic_tensor_splits_of_lifts {p : ℕ} [Fact p.Prime] {K : Type*} [Field K] [Algebra ℚ K]
+    [FiniteDimensional ℚ K] (hK : Module.finrank ℚ K = 3) (u w : ℤ)
+    (hc : u*w*(u+w) ≠ 0) (α : K) (hα : α ∉ Set.range (algebraMap ℚ K))
+    (hF : (finiteChart (u : ℚ) (w : ℚ)).aeval α = 0)
+    (hL : ThreeProjectiveLifts (u : ℤ_[p]) (w : ℤ_[p])) :
+    Nonempty ((ℚ_[p] ⊗[ℚ] K) ≃ₐ[ℚ_[p]] (Fin 3 → ℚ_[p])) := by
+  have hi : IsIntegral ℚ α := IsIntegral.of_finite ℚ α
+  have hm := minpoly_degree_three hK α hα
+  have htop : IntermediateField.adjoin ℚ {α} = ⊤ := by
+    apply IntermediateField.eq_of_le_of_finrank_le le_top
+    rw [IntermediateField.finrank_top', IntermediateField.adjoin.finrank hi, hK, hm]
+  have hc' : (u : ℤ_[p])*(w : ℤ_[p])*((u : ℤ_[p])+w) ≠ 0 := by exact_mod_cast hc
+  obtain ⟨ρ, hρ, he⟩ := affine_roots_of_projective_lifts hc' hL
+  apply tensor_split_of_minpoly_roots hK α htop ρ hρ
+  intro i
+  let F := finiteChart (u : ℚ) (w : ℚ)
+  have hdeg : F.natDegree = 3 := cubic_polynomial _ _ (by exact_mod_cast hc)
+  obtain ⟨G, hG⟩ := minpoly.dvd ℚ α hF
+  change F = minpoly ℚ α * G at hG
+  have hF₀ : F ≠ 0 := by intro h; simp [h] at hdeg
+  have hG₀ : G ≠ 0 := by rintro rfl; simp at hG; exact hF₀ hG
+  have hGdeg : G.natDegree = 0 := by
+    rw [hG, natDegree_mul (minpoly.ne_zero hi) hG₀, hm] at hdeg
+    omega
+  have hConst := eq_C_of_natDegree_le_zero (p := G) hGdeg.le
+  have hc0 : G.coeff 0 ≠ 0 := by
+    intro h
+    apply hG₀
+    rw [hConst,h,C_0]
+  have hFi : F.eval₂ (algebraMap ℚ ℚ_[p]) (ρ i) = 0 := by
+    rw [eval₂_eq_eval_map]
+    unfold F
+    rw [map_finite, map_intCast, map_intCast]
+    simpa using he i
+  rw [hG, eval₂_mul, hConst, eval₂_C] at hFi
+  exact (mul_eq_zero.mp hFi).resolve_right ((_root_.map_ne_zero (algebraMap ℚ ℚ_[p])).mpr hc0)
+
+theorem primitive_padic_reduction {p : ℕ} [Fact p.Prime] {u w : ℤ} (hg : u.gcd w = 1) :
+    PadicInt.toZMod (u : ℤ_[p]) ≠ 0 ∨ PadicInt.toZMod (w : ℤ_[p]) ≠ 0 := by
+  simp only [map_intCast]
+  by_contra! hh
+  exact not_both_dvd (Fact.out : p.Prime) hg ⟨
+    (ZMod.intCast_zmod_eq_zero_iff_dvd ..).mp hh.1,
+    (ZMod.intCast_zmod_eq_zero_iff_dvd ..).mp hh.2⟩
+
+/-- Every primitive cubic fiber with nonzero leading coefficient splits over the 2-adics. -/
+theorem cubic_tensor_splits_at_two {K : Type*} [Field K] [Algebra ℚ K] [FiniteDimensional ℚ K]
+    (hK : Module.finrank ℚ K = 3) (u w : ℤ) (hg : u.gcd w = 1) (hc : u*w*(u+w) ≠ 0) (α : K)
+    (hα : α ∉ Set.range (algebraMap ℚ K)) (hF : (finiteChart (u : ℚ) (w : ℚ)).aeval α = 0) :
+    Nonempty ((ℚ_[2] ⊗[ℚ] K) ≃ₐ[ℚ_[2]] (Fin 3 → ℚ_[2])) :=
+  cubic_tensor_splits_of_lifts hK u w hc α hα hF
+    (threeProjectiveLifts_at_two _ _ (primitive_padic_reduction hg))
+
+/-- The local conditions in Proposition 3.1 give a split algebra for an explicit cubic fiber. -/
+theorem cubic_tensor_splits_of_nonintegral_ratio {p : ℕ} [Fact p.Prime] {K : Type*} [Field K]
+    [Algebra ℚ K] [FiniteDimensional ℚ K] (hK : Module.finrank ℚ K = 3) (u w : ℤ)
+    (hg : u.gcd w = 1) (hc : u*w*(u+w) ≠ 0) (α : K)
+    (hα : α ∉ Set.range (algebraMap ℚ K)) (hF : (finiteChart (u : ℚ) (w : ℚ)).aeval α = 0)
+    (hp : p = 2 ∨ p % 7 = 1 ∨ p % 7 = 6) (numerator : ℤ_[p])
+    (h : 1 < ‖(numerator : ℚ_[p]) /
+      ((projectiveDenominator (u : ℤ_[p]) (w : ℤ_[p]) : ℤ_[p]) : ℚ_[p])‖) :
+    Nonempty ((ℚ_[p] ⊗[ℚ] K) ≃ₐ[ℚ_[p]] (Fin 3 → ℚ_[p])) := by
+  have hL : ThreeProjectiveLifts (u : ℤ_[p]) (w : ℤ_[p]) := by
+    have hw := primitive_padic_reduction (p := p) hg
+    rcases hp with rfl | hp
+    · exact threeProjectiveLifts_at_two _ _ hw
+    · exact threeProjectiveLifts_of_nonintegral_ratio _ _ numerator hw hp h
+  exact cubic_tensor_splits_of_lifts hK u w hc α hα hF hL
+
+end NajmanTrbovic.Cubic
