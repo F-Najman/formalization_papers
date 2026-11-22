@@ -5,6 +5,8 @@ import NajmanTrbovic
 #print axioms NajmanTrbovic.represents_iff_rational_twist
 #print axioms NajmanTrbovic.quadraticOrder_isIntegralClosure
 #print axioms NajmanTrbovic.numberField_discriminant
+#print axioms NajmanTrbovic.order_discriminant
+#print axioms NajmanTrbovic.radicand_not_square
 #print axioms NajmanTrbovic.table7_field_iff
 #print axioms NajmanTrbovic.field_odd_ramified_imp_square
 #print axioms NajmanTrbovic.field_ramified_imp_square
@@ -21,6 +23,9 @@ import NajmanTrbovic
 #print axioms NajmanTrbovic.table2_real
 #print axioms NajmanTrbovic.table2_refinements
 #print axioms NajmanTrbovic.exceptional26
+#print axioms NajmanTrbovic.eleven_ramifies_exceptional26
+#print axioms NajmanTrbovic.lemma26b_counterexample
+#print axioms NajmanTrbovic.lemma26b_conclusion_fails
 #print axioms NajmanTrbovic.lemma29_counterexample
 #print axioms NajmanTrbovic.Cubic.descended_invariants
 #print axioms NajmanTrbovic.Cubic.descended_j

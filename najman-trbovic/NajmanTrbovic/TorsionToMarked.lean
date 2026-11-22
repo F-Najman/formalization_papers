@@ -6,6 +6,7 @@ public import NajmanTrbovic.MarkedTorsionNormalForm
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.GroupTheory.Torsion
 public import Mathlib.Basic.Real.Basic
+public import Mathlib.Algebra.Field.ZMod
 
 import Mathlib.Algebra.Order.Ring.InjSurj
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic

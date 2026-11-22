@@ -1,8 +1,8 @@
 # Formalizations of papers
 
 Lean 4 / Mathlib formalizations of results from papers by Filip Najman. Each directory is a self-contained Lean
-project, with its own toolchain and a README. `gaussian-quartics` and `three-factorials` also have a
-[Comparator](https://github.com/leanprover/comparator) challenge stating the formalized results over Mathlib alone.
+project, with its own toolchain, a [Comparator](https://github.com/leanprover/comparator) challenge stating the
+formalized results over Mathlib alone, Palomar metadata (`formalization.yaml`), and a README.
 
 | directory | paper | results |
 |---|---|---|
