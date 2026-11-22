@@ -1,3 +1,5 @@
+module
+
 import ThreeFactorials
 
 #print axioms ThreeFactorials.solution_iff_squarefree
