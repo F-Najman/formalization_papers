@@ -18,7 +18,7 @@ A partial Lean 4 / Mathlib formalization of
   proves exactly these statements about exactly these definitions.
 * About 3,300 lines of Lean, on Lean v4.35.0 and Mathlib v4.35.0, using Lean's module system.
 
-The Lean code was written by Codex (an AI coding agent) at the author's request. Codex was asked to prove only
+The Lean code was written by OpenAI's GPT-6.2 Sol (in Codex) at the author's request. It was asked to prove only
 correct claims, guided by an AI review of the paper (November 2026, not published); "the review" below refers to it.
 The Comparator challenge, the checks and the Palomar metadata were added afterwards, and two AI reviewer agents
 reviewed the statements. The author has not yet reviewed the statements. See

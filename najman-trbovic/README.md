@@ -13,7 +13,7 @@ Some results about the cubic fields take a step of the paper's proof as a hypoth
 below. No `sorry`; every result depends only on the standard axioms `propext`, `Classical.choice` and `Quot.sound`.
 About 6,800 lines of Lean, on Lean v4.35.0 and Mathlib v4.35.0, using Lean's module system.
 
-The Lean code was written by OpanAI's GPT-6.2 Sol at the author's request. The statements have not yet been
+The Lean code was written by OpenAI's GPT-6.2 Sol at the author's request. The statements have not yet been
 reviewed by the author, and there is no [Comparator](https://github.com/leanprover/comparator) challenge for this
 project yet.
 
